@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="show-list">
-      <div v-for="(item, idx) in list" :key="idx" style="transform: scale(0.7)">
+      <div v-for="(item, idx) in list" :key="idx">
         <h6>{{ item.title }}</h6>
         <VSVGText
           v-for="(config, i) in item.configs"
@@ -118,35 +118,8 @@ export default {
       title: "字体",
       configs: [
         { ...defaultItem, fontFamily: "yahei" },
-        { ...defaultItem, fontFamily: "font-12" },
-        { ...defaultItem, fontFamily: "font-17" },
-        { ...defaultItem, fontFamily: "font-18" },
-        { ...defaultItem, fontFamily: "font-20" },
-        { ...defaultItem, fontFamily: "font-21" },
-        { ...defaultItem, fontFamily: "font-22" },
-        { ...defaultItem, fontFamily: "font-23" },
-        { ...defaultItem, fontFamily: "font-24" },
-        { ...defaultItem, fontFamily: "font-25" },
-        { ...defaultItem, fontFamily: "font-27" },
         { ...defaultItem, fontFamily: "font-28" },
-        { ...defaultItem, fontFamily: "font-2" },
         { ...defaultItem, fontFamily: "font-30" },
-        { ...defaultItem, fontFamily: "font-31" },
-        { ...defaultItem, fontFamily: "font-33" },
-        { ...defaultItem, fontFamily: "font-34" },
-        { ...defaultItem, fontFamily: "font-35" },
-        { ...defaultItem, fontFamily: "font-37" },
-        { ...defaultItem, fontFamily: "font-38" },
-        { ...defaultItem, fontFamily: "font-39" },
-        { ...defaultItem, fontFamily: "font-44" },
-        { ...defaultItem, fontFamily: "font-48" },
-        { ...defaultItem, fontFamily: "font-49" },
-        { ...defaultItem, fontFamily: "font-4" },
-        { ...defaultItem, fontFamily: "font-51" },
-        { ...defaultItem, fontFamily: "font-5" },
-        { ...defaultItem, fontFamily: "font-6" },
-        { ...defaultItem, fontFamily: "font-7" },
-        { ...defaultItem, fontFamily: "font-8" },
       ],
     });
 
@@ -155,7 +128,7 @@ export default {
       configs: a.configs.map((b) => ({ ...b, writtingMode: "vertical-rl" })),
     }));
 
-    const list = [...listHorizontal, ...listVertical];
+    const list = [...listHorizontal, ...listVertical].slice(0, 1);
     return {
       list,
     };
@@ -182,6 +155,7 @@ export default {
   align-items: flex-start;
   svg {
     vertical-align: top;
+    transform: scale(0.7);
   }
   img {
     margin: 10px;

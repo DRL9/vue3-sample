@@ -1,5 +1,12 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" :width="svgWidth" :height="svgHeight">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    :width="svgWidth"
+    :height="svgHeight"
+    preserveAspectRatio="none"
+    :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
+    class="v-text-svg"
+  >
     <text
       :class="className"
       ref="refText"
@@ -8,32 +15,15 @@
       :stroke-width="strokeWidth + 'px'"
       :stroke="strokeColor"
     >
-      <tspan
-        v-for="item in tspanList"
-        :x="item.x"
-        :y="item.y"
-        :dx="item.dx"
-        :dy="item.dy"
-        :key="item.idx"
-      >
-        {{ item.txt }}
-      </tspan>
+      <!-- 名字取短点, 不然eslint换行会导致前后加空格 -->
+      <tspan v-for="i in tList" v-bind="i.prop" :key="i.idx">{{ i.txt }}</tspan>
     </text>
     <text
       :class="className"
       :text-anchor="textAnchor"
       dominant-baseline="hanging"
     >
-      <tspan
-        v-for="item in tspanList"
-        :x="item.x"
-        :y="item.y"
-        :dx="item.dx"
-        :dy="item.dy"
-        :key="item.idx"
-      >
-        {{ item.txt }}
-      </tspan>
+      <tspan v-for="i in tList" v-bind="i.prop" :key="i.idx">{{ i.txt }}</tspan>
     </text>
     <svg:style>
       .{{className}} {
@@ -62,7 +52,6 @@ export default {
     },
     letterSpacing: {
       type: Number,
-      //   px
       default: 0,
     },
     color: {
@@ -118,8 +107,6 @@ export default {
     return {
       svgWidth: 0,
       svgHeight: 0,
-      crossAxis: 0,
-      mainAxis: 0,
       className: "c-" + id++,
     };
   },
@@ -159,19 +146,21 @@ export default {
       }
       return "end";
     },
-    tspanList() {
+    tList() {
       // 因为 vertical-rl 没生效, 所以人为逆转
-      let list = this.content.split("\n");
+      let list = this.content.split("\n").filter(Boolean);
       if (this.writtingMode === "vertical-rl") {
         list.reverse();
       }
       return list.map((txt, idx) => ({
         txt,
         idx,
-        dx: this.isHorizontal ? 0 : `1em`,
-        x: this.isHorizontal ? this.x : `${idx * this.lineHeight}em`,
-        dy: this.isHorizontal ? "0.2em" : 0,
-        y: this.isHorizontal ? `${idx * this.lineHeight}em` : this.y,
+        prop: {
+          dx: this.isHorizontal ? 0 : `0.9em`,
+          x: this.isHorizontal ? this.x : `${idx * this.lineHeight}em`,
+          dy: this.isHorizontal ? "0.2em" : 0,
+          y: this.isHorizontal ? `${idx * this.lineHeight}em` : this.y,
+        },
       }));
     },
     styleContent() {
@@ -190,10 +179,8 @@ export default {
   mounted() {
     const resizeObserver = new ResizeObserver(() => {
       const rect = this.$refs.refText.getBoundingClientRect();
-      this.svgWidth = rect.width;
-      this.svgHeight = rect.height;
-      //   this.crossAxis = Math.floor(rect.height / 2);
-
+      this.svgWidth = Math.round(rect.width);
+      this.svgHeight = Math.round(rect.height);
       this._resolve && this._resolve();
     });
     resizeObserver.observe(this.$refs.refText);
@@ -216,9 +203,7 @@ export default {
 </script>
 
 <style>
-svg {
-  outline: 1px solid #f00;
-  margin: 2px;
+.v-text-svg {
   user-select: none;
 }
 </style>
