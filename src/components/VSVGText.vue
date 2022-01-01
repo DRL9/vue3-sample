@@ -1,9 +1,10 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="none"
+    ref="refSvgRoot"
     :width="svgWidth"
     :height="svgHeight"
-    preserveAspectRatio="none"
     :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
     class="v-text-svg"
   >
@@ -105,8 +106,8 @@ export default {
   },
   data() {
     return {
-      svgWidth: 0,
-      svgHeight: 0,
+      svgWidth: 1,
+      svgHeight: 1,
       className: "c-" + id++,
     };
   },
@@ -179,8 +180,15 @@ export default {
   mounted() {
     const resizeObserver = new ResizeObserver(() => {
       const rect = this.$refs.refText.getBoundingClientRect();
-      this.svgWidth = Math.round(rect.width);
-      this.svgHeight = Math.round(rect.height);
+
+      let scale = 1;
+      let wrapDom = this.$refs.refSvgRoot.parentElement;
+      if (wrapDom && wrapDom.offsetWidth > 0) {
+        scale = wrapDom.getBoundingClientRect().width / wrapDom.offsetWidth;
+      }
+      // 如果不这么做， 当祖先元素缩放时，文本不能显示全
+      this.svgWidth = Math.round(rect.width / scale);
+      this.svgHeight = Math.round(rect.height / scale);
       this._resolve && this._resolve();
     });
     resizeObserver.observe(this.$refs.refText);
