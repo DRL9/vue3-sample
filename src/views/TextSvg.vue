@@ -1,7 +1,18 @@
 <template>
   <div>
+    <div>
+      {{ scale.toFixed(2) }}
+      <button @click="scale += 0.1">+</button>
+      <button @click="scale -= 0.1">-</button>
+    </div>
     <div class="show-list">
-      <div v-for="(item, idx) in list" :key="idx">
+      <div
+        v-for="(item, idx) in list"
+        :key="idx"
+        :style="{
+          transform: `scale(${scale})`,
+        }"
+      >
         <h6>{{ item.title }}</h6>
         <VSVGText
           v-for="(config, i) in item.configs"
@@ -128,9 +139,10 @@ export default {
       configs: a.configs.map((b) => ({ ...b, writtingMode: "vertical-rl" })),
     }));
 
-    const list = [...listHorizontal, ...listVertical].slice(0, 1);
+    const list = [...listHorizontal, ...listVertical].slice(0, 111);
     return {
       list,
+      scale: 0.5,
     };
   },
   methods: {
@@ -155,7 +167,6 @@ export default {
   align-items: flex-start;
   svg {
     vertical-align: top;
-    transform: scale(0.7);
   }
   img {
     margin: 10px;
