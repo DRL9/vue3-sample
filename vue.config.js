@@ -1,4 +1,14 @@
+/**
+ * @typedef {import('@vue/cli-service').ProjectOptions} Options
+ */
+
+/**
+ * @type {Options}
+ */
 module.exports = {
+  devServer: {
+    open: true,
+  },
   chainWebpack: (config) => {
     config.module
       .rule("vue")
