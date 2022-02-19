@@ -1,7 +1,12 @@
 <template>
-  <div></div>
+  <div>
+    <VIntersectionObserver />
+  </div>
 </template>
 
 <script>
-export default {};
+import VIntersectionObserver from "@/components/VIntersectionObserver.vue";
+export default {
+  components: { VIntersectionObserver },
+};
 </script>
