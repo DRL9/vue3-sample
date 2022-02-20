@@ -1,13 +1,7 @@
 <template>
   <div class="wrap">
     <div class="box-wrap" ref="boxWrap">
-      <div
-        class="box box1"
-        ref="refBox1"
-        :style="{
-          transform: `translate(0, ${box1Y}px)`,
-        }"
-      ></div>
+      <div class="box box1" ref="refBox1"></div>
       <div class="box box2" ref="refBox2"></div>
     </div>
     <div class="info">
@@ -23,7 +17,6 @@
 export default {
   data() {
     return {
-      box1Y: 0,
       intersectionRatio1: 0,
     };
   },
@@ -42,6 +35,7 @@ export default {
       }
     );
     observer.observe(this.$refs.refBox1);
+    observer.observe(this.$refs.refBox2);
   },
 };
 </script>

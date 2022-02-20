@@ -7,6 +7,7 @@
       <button @click="clickHandler('borderWidth')">borderWidth +1</button>
       <button @click="clickHandler('padding')">padding +1</button>
       <button @click="clickHandler('scale')">scale +0.1</button>
+      <button @click="clickHandler('prove')">prove</button>
     </div>
     <div>
       history
@@ -32,6 +33,7 @@ export default {
     });
     const histories = ref([]);
     const observer = new ResizeObserver((entries) => {
+      console.log("from observer");
       entries.forEach((entry) => {
         histories.value.push(
           `width: ${entry.contentRect.width},
@@ -55,6 +57,13 @@ export default {
       if (type === "scale") {
         scale += 0.1;
         style.value.transform = `scale(${scale})`;
+        return;
+      } else if (type === "prove") {
+        setTimeout(() => {
+          console.log("from set time out");
+        }, 0);
+        refBox.value.style.width = "20px";
+        console.log(refBox.value.getBoundingClientRect());
         return;
       }
       style.value[type] = parseInt(style.value[type]) + 1 + "px";
