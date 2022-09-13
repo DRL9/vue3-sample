@@ -1,12 +1,21 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>|
-    <router-link to="/test/list">List</router-link>|
-    <router-link to="/svg_text">svg_text</router-link>
+    <router-link v-for="route in routes" :key="route.path" :to="route.path">
+      {{ route.name }} |
+    </router-link>
   </div>
   <router-view />
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      routes: this.$router.getRoutes(),
+    };
+  },
+};
+</script>
 
 <style lang="less">
 @font-face {
